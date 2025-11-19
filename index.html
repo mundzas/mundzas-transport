@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Mundzas y Transporte — Ads Listing</title>
+<link rel="icon" href="https://i.ibb.co/7tbrV2qZ/PHOTO-2025.jpg">
+<style>
+  :root{
+    --accent:#0c6d63;
+    --muted:#6b7a7a;
+    --card-bg:#ffffff;
+    --page-bg:#f5f7f8;
+    --wh:#25D366;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family:Arial, Helvetica, sans-serif;
+    background:var(--page-bg);
+    color:#222;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* header */
+  header{
+    background:linear-gradient(90deg,var(--accent),#07564b);
+    color:#fff;
+    padding:24px 16px;
+    text-align:center;
+  }
+  header h1{margin:0;font-size:24px}
+  header p{margin:6px 0 0;color:rgba(255,255,255,0.9)}
+
+  /* container */
+  .wrap{width:94%;max-width:1150px;margin:18px auto 60px}
+
+  /* search + actions */
+  .toprow{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin:18px 0}
+  .search{
+    flex:1;
+    display:flex;
+    gap:8px;
+    align-items:center;
+  }
+  .search input{
+    flex:1;padding:12px 14px;border-radius:10px;border:1px solid #d6dfe0;font-size:16px;
+  }
+  .filters{display:flex;gap:8px}
+  .chip{
+    padding:10px 12px;border-radius:999px;background:white;border:1px solid #e6ecec;font-size:14px;color:var(--muted);cursor:pointer;
+  }
+  .chip.active{background:var(--accent);color:white;border-color:var(--accent)}
+
+  /* grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:18px;
+    margin-top:18px;
+  }
+  .card{
+    background:var(--card-bg);
+    border-radius:12px;
+    overflow:hidden;
+    box-shadow:0 6px 18px rgba(20,30,30,0.06);
+    display:flex;
+    flex-direction:column;
+  }
+  .card img{width:100%;height:200px;object-fit:cover;display:block}
+  .card-body{padding:14px;flex:1;display:flex;flex-direction:column}
+  .title{font-weight:700;color:var(--accent);font-size:18px;margin-bottom:6px}
+  .city{font-size:14px;color:var(--muted);margin-bottom:8px}
+  .desc{font-size:14px;color:#333;flex:1;margin-bottom:10px}
+  .price{font-weight:700;font-size:18px;color:#111}
+  .card-row{display:flex;gap:8px;align-items:center;justify-content:space-between;margin-top:10px}
+  .btn{background:var(--wh);color:white;padding:10px 12px;border-radius:8px;text-decoration:none;display:inline-block;font-weight:700}
+  .btn.secondary{background:#4285F4}
+  .small{font-size:13px;padding:8px 10px;border-radius:8px;border:1px solid #e6ecec;background:white;color:var(--muted);text-decoration:none}
+
+  /* modal */
+  .modal-back{position:fixed;inset:0;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;padding:20px;z-index:200;}
+  .modal{width:100%;max-width:760px;background:white;border-radius:12px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,0.4)}
+  .modal-header{padding:14px 16px;border-bottom:1px solid #eef3f3;display:flex;justify-content:space-between;align-items:center}
+  .modal-body{display:flex;flex-wrap:wrap;gap:14px;padding:18px}
+  .modal-body img{width:100%;max-width:360px;border-radius:8px;object-fit:cover}
+  .modal-info{flex:1;min-width:200px}
+  .close-btn{background:#f1f1f1;border:none;padding:8px 10px;border-radius:8px;cursor:pointer}
+
+  /* floating whatsapp */
+  .wh-float{position:fixed;right:18px;bottom:18px;background:var(--wh);color:white;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;z-index:220;text-decoration:none;box-shadow:0 10px 30px rgba(37,211,102,0.22)}
+
+  /* footer */
+  footer{background:#111;color:#fff;padding:20px;text-align:center;margin-top:40px;border-top:4px solid rgba(255,255,255,0.03)}
+
+  /* responsive tweaks */
+  @media(max-width:520px){
+    .modal-body{flex-direction:column}
+    .card img{height:160px}
+    header h1{font-size:20px}
+    .wh-float{width:56px;height:56px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Mundzas y Transporte</h1>
+  <p>Professional Moving & Transport — Post ads and get clients via WhatsApp</p>
+</header>
+
+<div class="wrap">
+
+  <div class="toprow">
+    <div class="search">
+      <input id="searchInput" placeholder="Search by title or city (e.g. Madrid, Barcelona)..." />
+      <button class="small" id="clearSearch" title="Clear search">Clear</button>
+    </div>
+
+    <div class="filters" aria-hidden="false">
+      <div class="chip active" data-cat="all">All</div>
+      <div class="chip" data-cat="loading">Loading</div>
+      <div class="chip" data-cat="house">House Moving</div>
+      <div class="chip" data-cat="furniture">Furniture</div>
+    </div>
+  </div>
+
+  <div id="grid" class="grid">
+    <!-- Card template repeated (6 ads) -->
+    <div class="card" data-title="Transport & Moving Service" data-city="Barcelona" data-cat="loading">
+      <img src="https://i.ibb.co/7tbrV2qZ/PHOTO-2025.jpg" alt="Transport Service">
+      <div class="card-body">
+        <div class="title">Transport & Moving Service</div>
+        <div class="city">Barcelona</div>
+        <div class="desc">Fast loading & unloading. 2 workers + driver. Safe transport and careful handling of furniture and boxes.</div>
+        <div class="price">€25 / hour</div>
+        <div class="card-row">
+          <a class="btn" href="https://wa.me/34607445914" target="_blank">WhatsApp</a>
+          <button class="small" onclick="openModal(this)">View details</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-title="Full House Moving" data-city="Madrid" data-cat="house">
+      <img src="https://i.ibb.co/tpqh27H8/photo-2025.jpg" alt="House Moving">
+      <div class="card-body">
+        <div class="title">Full House Moving</div>
+        <div class="city">Madrid</div>
+        <div class="desc">Complete home shifting service with packing, loading, transfer and unloading. Professional team available 24/7.</div>
+        <div class="price">€40 / hour</div>
+        <div class="card-row">
+          <a class="btn" href="https://wa.me/34607445914" target="_blank">WhatsApp</a>
+          <button class="small" onclick="openModal(this)">View details</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-title="Furniture Assembly Service" data-city="Valencia" data-cat="furniture">
+      <img src="https://i.ibb.co/7tbrV2qZ/PHOTO-2025.jpg" alt="Furniture Service">
+      <div class="card-body">
+        <div class="title">Furniture Assembly</div>
+        <div class="city">Valencia</div>
+        <div class="desc">We assemble and disassemble furniture with care. Small items to big wardrobes handled professionally.</div>
+        <div class="price">€30 / hour</div>
+        <div class="card-row">
+          <a class="btn" href="https://wa.me/34607445914" target="_blank">WhatsApp</a>
+          <button class="small" onclick="openModal(this)">View details</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-title="Office Relocation" data-city="Bilbao" data-cat="house">
+      <img src="https://i.ibb.co/tpqh27H8/photo-2025.jpg" alt="Office">
+      <div class="card-body">
+        <div class="title">Office Relocation</div>
+        <div class="city">Bilbao</div>
+        <div class="desc">Office moving, IT equipment handling, packing and safe transport. Minimal downtime guarantee.</div>
+        <div class="price">€55 / hour</div>
+        <div class="card-row">
+          <a class="btn" href="https://wa.me/34607445914" target="_blank">WhatsApp</a>
+          <button class="small" onclick="openModal(this)">View details</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-title="Express Small Moves" data-city="Tarragona" data-cat="loading">
+      <img src="https://i.ibb.co/7tbrV2qZ/PHOTO-2025.jpg" alt="Express">
+      <div class="card-body">
+        <div class="title">Express Small Moves</div>
+        <div class="city">Tarragona</div>
+        <div class="desc">Small items, single-room moves. Fast same-day service for nearby cities.</div>
+        <div class="price">€18 / hour</div>
+        <div class="card-row">
+          <a class="btn" href="https://wa.me/34607445914" target="_blank">WhatsApp</a>
+          <button class="small" onclick="openModal(this)">View details</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" data-title="Safe Cargo Transport" data-city="Malaga" data-cat="loading">
+      <img src="https://i.ibb.co/tpqh27H8/photo-2025.jpg" alt="Cargo">
+      <div class="card-body">
+        <div class="title">Safe Cargo Transport</div>
+        <div class="city">Malaga</div>
+        <div class="desc">Long-distance cargo and van transport with secure strapping and insurance options available.</div>
+        <div class="price">€60 / trip</div>
+        <div class="card-row">
+          <a class="btn" href="https://wa.me/34607445914" target="_blank">WhatsApp</a>
+          <button class="small" onclick="openModal(this)">View details</button>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- end grid -->
+
+</div> <!-- end wrap -->
+
+<!-- Modal -->
+<div id="modalBack" class="modal-back" onclick="closeModal(event)">
+  <div class="modal" role="dialog" aria-modal="true" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div><strong id="mTitle">Title</strong><div id="mCity" style="font-size:13px;color:var(--muted)"></div></div>
+      <button class="close-btn" onclick="closeModal()">Close ✕</button>
+    </div>
+    <div class="modal-body">
+      <img id="mImage" src="" alt="image">
+      <div class="modal-info">
+        <p id="mDesc" style="font-size:15px;color:#333"></p>
+        <p style="font-weight:700;font-size:18px" id="mPrice"></p>
+        <p style="margin-top:8px;color:var(--muted);font-size:14px">Contact directly via WhatsApp or Email</p>
+        <div style="margin-top:12px;display:flex;gap:10px;flex-wrap:wrap">
+          <a id="mWhats" class="btn" href="#" target="_blank">WhatsApp</a>
+          <a id="mEmail" class="btn secondary" href="mailto:toseefgujjarcontact@gmail.com">Email</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Floating WhatsApp -->
+<a class="wh-float" href="https://wa.me/34607445914" target="_blank" title="Chat on WhatsApp">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20.52 3.48A11.92 11.92 0 0 0 12 0C5.373 0 .001 5.373 0 12.001c0 2.112.55 4.17 1.6 5.98L0 24l6.28-1.6A11.938 11.938 0 0 0 12 24c6.627 0 12-5.373 12-11.999 0-3.2-1.25-6.2-3.48-8.52z" fill="#fff"/></svg>
+</a>
+
+<footer>
+  <div style="max-width:1100px;margin:auto;padding:8px 12px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
+      <div>© 2025 Mundzas y Transporte</div>
+      <div style="color:#bbb">Email: <a style="color:#fff;text-decoration:underline" href="mailto:toseefgujjarcontact@gmail.com">toseefgujjarcontact@gmail.com</a> · Phone: <a style="color:#fff;text-decoration:underline" href="https://wa.me/34607445914">+34 607 44 59 14</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Search & Filter
+  const searchInput = document.getElementById('searchInput');
+  const grid = document.getElementById('grid');
+  const chips = document.querySelectorAll('.chip');
+
+  searchInput.addEventListener('input', applyFilters);
+  document.getElementById('clearSearch').addEventListener('click', ()=>{
+    searchInput.value=''; applyFilters();
+  });
+
+  chips.forEach(ch => ch.addEventListener('click', ()=>{
+    chips.forEach(c=>c.classList.remove('active'));
+    ch.classList.add('active');
+    applyFilters();
+  }));
+
+  function applyFilters(){
+    const q = searchInput.value.trim().toLowerCase();
+    const activeCat = document.querySelector('.chip.active').dataset.cat;
+    const cards = grid.querySelectorAll('.card');
+    cards.forEach(card=>{
+      const title = card.dataset.title.toLowerCase();
+      const city = card.dataset.city.toLowerCase();
+      const cat = card.dataset.cat;
+      const matchText = (title.includes(q) || city.includes(q) || q==='');
+      const matchCat = (activeCat==='all' || activeCat===cat);
+      card.style.display = (matchText && matchCat) ? 'flex' : 'none';
+    });
+  }
+
+  // Modal for details
+  const modalBack = document.getElementById('modalBack');
+  function openModal(btn){
+    // find the card element
+    const card = btn.closest('.card');
+    const title = card.dataset.title;
+    const city = card.dataset.city;
+    const img = card.querySelector('img').src;
+    const desc = card.querySelector('.desc').innerText;
+    const price = card.querySelector('.price').innerText;
+    document.getElementById('mTitle').innerText = title;
+    document.getElementById('mCity').innerText = city;
+    document.getElementById('mImage').src = img;
+    document.getElementById('mDesc').innerText = desc;
+    document.getElementById('mPrice').innerText = price;
+    // WhatsApp & email links
+    const waNumber = '34607445914'; // change here if needed
+    document.getElementById('mWhats').href = 'https://wa.me/' + waNumber + '?text=' + encodeURIComponent('Hello, I am interested in: ' + title + ' ('+city+')');
+    document.getElementById('mEmail').href = 'mailto:toseefgujjarcontact@gmail.com?subject=' + encodeURIComponent('Inquiry: ' + title) + '&body=' + encodeURIComponent('Hello, I want more details about ' + title + ' in ' + city + '.');
+    modalBack.style.display='flex';
+    document.body.style.overflow='hidden';
+  }
+
+  function closeModal(e){
+    modalBack.style.display='none';
+    document.body.style.overflow='';
+  }
+
+  // small UX: close modal on ESC
+  document.addEventListener('keydown', function(e){
+    if(e.key==='Escape') closeModal();
+  });
+
+  // initial filter run
+  applyFilters();
+</script>
+
+</body>
+</html>
